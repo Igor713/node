@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.urlencoded({ extended: true }))
+
 app.get('/', (req, res) => {
   res.send(`
     <form action="/" method="POST">
@@ -17,7 +19,7 @@ app.get('/test:idUsers?', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  res.send('Recebi o formulário')
+  res.send(`O que você me enviou foi ${req.body.nome}`)
 })
 
 app.get('contact', (req, res) => {
