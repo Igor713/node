@@ -2,6 +2,36 @@ function createCalculator() {
   return {
     display: document.querySelector(".display"),
 
+    start() {
+      this.clickButtons();
+      this.pressEnter();
+    },
+
+    pressEnter() {
+      this.display.addEventListener("keyup", (e) => {
+        if (e.KeyCode === 13) {
+          this.calculate();
+        }
+      });
+    },
+
+    calculate() {
+      let result = this.display.value;
+
+      try {
+        result = eval(result);
+
+        if (!result) {
+          alert("Conta inválida");
+          return;
+        }
+        this.display.value = String(result);
+      } catch (e) {
+        alert("Conta inválida");
+        return;
+      }
+    },
+
     clearDisplay() {
       this.display.value = "";
     },
@@ -10,15 +40,9 @@ function createCalculator() {
       this.display.value = this.display.value.slice(0, -1);
     },
 
-    start() {
-      this.clickButtons();
-    },
-
     clickButtons() {
       document.addEventListener("click", (e) => {
         const el = e.target;
-
-        console.log(el.classList.contains("btn-clear"));
 
         if (el.classList.contains("btn-num")) {
           this.btnFromDisplay(el.innerText);
@@ -30,6 +54,10 @@ function createCalculator() {
 
         if (el.classList.contains("btn-del")) {
           this.deleteOne();
+        }
+
+        if (el.classList.contains("btn-eq")) {
+          this.calculate();
         }
       });
     },
